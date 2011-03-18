@@ -1,0 +1,10 @@
+1. 先到此處抓取最新的檔案 ftp://satepsanone.nesdis.noaa.gov/MTCSWA/ATCF_FIX/ 
+2.根據檔案內的前面幾個字串找到 上層目錄中ftp://satepsanone.nesdis.noaa.gov/MTCSWA/ 對應的目錄裡面的檔案
+
+注意： 本程式會被定期叫起，因此你會需要記住上一次的檔案列表。
+注意： 儘量使用標準的套件，亦即不使用 easy_install 。
+
+ex:
+
+1. 看到這個檔案 ftp://satepsanone.nesdis.noaa.gov/MTCSWA/ATCF_FIX/NSOF_201103100000_97S_FIX 
+2.就到上一層的 /SH972011/ 有包含字串2010031000 的那個bin和ctl檔 抓回來
