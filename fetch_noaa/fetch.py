@@ -16,25 +16,26 @@ def combindDirName(data):
     return dirname
 
 
-def fetchData(ftp,f):
+def fetchData(ftp,f,host,data_dir):
     print "fetchData"
     def saveFile(data):
         dirname = combindDirName(data)
-        tydata = TyData(f,dirname)
+        tydata = TyData(f,dirname,host,data_dir)
         tydata.download()
 
     ftp.retrlines('RETR '+f,saveFile)
 
 host="satepsanone.nesdis.noaa.gov"
+data_dir="MTCSWA"
 ftp = FTP(host)
 ftp.login()
-ftp.cwd("MTCSWA")
+ftp.cwd(data_dir)
 ftp.cwd("ATCF_FIX")
 
 files = ftp.nlst()
 for f in files:
 #     print f
-    fetchData(ftp,f)
+    fetchData(ftp,f,host,data_dir)
 
 ftp.quit()
 
