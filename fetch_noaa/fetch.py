@@ -2,6 +2,19 @@
 # -*-coding:utf-8-*-
 from ftplib import FTP
 from tydata import TyData
+from ConfigParser import SafeConfigParser
+import logging
+import sys
+
+#載入設定檔
+parser = SafeConfigParser()
+parser.read('config.conf')
+
+log_filepath = parser.get('log','dir')+"/"+parser.get('log','filename')
+#設定logger
+logging.basicConfig(filename=log_filepath,level=logging.DEBUG,format='%(asctime)s %(message)s')
+
+logging.info("starting...")
 
 def checkfile(data):
     print "line here"
@@ -21,6 +34,7 @@ def fetchData(ftp,f,host,data_dir):
     def saveFile(data):
         dirname = combindDirName(data)
         tydata = TyData(f,dirname,host,data_dir)
+        tydata.setlogger(logging)
         tydata.download()
 
     ftp.retrlines('RETR '+f,saveFile)
@@ -28,14 +42,21 @@ def fetchData(ftp,f,host,data_dir):
 host="satepsanone.nesdis.noaa.gov"
 data_dir="MTCSWA"
 ftp = FTP(host)
-ftp.login()
-ftp.cwd(data_dir)
-ftp.cwd("ATCF_FIX")
+try:
+    ftp.login()
+    ftp.cwd(data_dir)
+    ftp.cwd("ATCF_FIX")
 
-files = ftp.nlst()
-for f in files:
+    files = ftp.nlst()
+    for f in files:
 #     print f
-    fetchData(ftp,f,host,data_dir)
+        fetchData(ftp,f,host,data_dir)
 
-ftp.quit()
 
+except :
+    typ,message,trackback = sys.exc_info()
+    print message
+    logging.error(message)
+finally:
+    ftp.quit()
+    logging.info('closed ftp')

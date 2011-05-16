@@ -12,6 +12,10 @@ class TyData:
         self.dateString = filename[5:15]
         print self.dateString
 
+    def setlogger(logger):
+        self.logger=logger
+         
+
     def download(self):
         path= self.host+"/"+self.data_dir+"/"+self.dirname
         print "downloading..."+path
