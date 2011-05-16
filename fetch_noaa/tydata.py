@@ -26,15 +26,21 @@ class TyData:
         ftp.cwd(self.dirname)
         files = ftp.nlst()
         is_found=False
-        for f in files:
-            if  f.find(self.dateString+".bin")!=-1 or f.find(self.dateString+".ctl")!=-1:
-                print f
-                ftp.retrbinary('RETR '+f,open(f,"wb").write)
-                is_found=True
+        try:
+            for f in files:
+                if  f.find(self.dateString+".bin")!=-1 or f.find(self.dateString+".ctl")!=-1:
+                    print f
+                    ftp.retrbinary('RETR '+f,open(f,"wb").write)
+                    is_found=True
 
-        if is_found ==False :
-            print "[Error] Can't find files"
-            self.logger.info("Can't find files")
-        ftp.close
+            if is_found ==False :
+                print "[Error] Can't find files"
+                self.logger.info("Can't find files")
+        except:
+            typ,message,trackback = sys.exc_info()
+            print message
+            self.logger.error(message)
+        finally:
+            ftp.close
 
     
