@@ -19,6 +19,7 @@ class TyData:
     def download(self):
         path= self.host+"/"+self.data_dir+"/"+self.dirname
         print "downloading..."+path
+        self.logger.info("downloading "+path)
         ftp = FTP(self.host)
         ftp.login()
         ftp.cwd(self.data_dir)
@@ -33,6 +34,7 @@ class TyData:
 
         if is_found ==False :
             print "[Error] Can't find files"
+            self.logger.info("Can't find files")
         ftp.close
 
     
